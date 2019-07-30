@@ -12,7 +12,7 @@ app.get('/', (req, res) => res.send('{"name":"bryan"}'))
 
 //get user object by e-mail 
 app.get('/user/:email', (request, response) => { 
-    database.one(`SELECT * FROM "user" WHERE userEmail = '${request.params.email}'`)
+    database.one(`SELECT * FROM "user" WHERE 'userEmail' = '${request.params.email}'`)
     .then((data) => {
         response.json(data);
     })
