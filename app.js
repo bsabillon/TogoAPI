@@ -15,7 +15,7 @@ app.listen(port, () => console.log(`ToGo app listening on port ${port}!`))
 
 
 //get user object by e-mail 
-app.get('/user/:email', (request, response) => { 
+app.get('/user/:user.userEmail', (request, response) => { 
     database.one(`SELECT * FROM "user" WHERE userEmail = '${request.params.email}'`)
     .then((data) => {
         response.json(data);
