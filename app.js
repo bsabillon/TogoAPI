@@ -5,14 +5,10 @@ var cors = require('cors');
 var pgp = require("pg-promise")();
 var database = pgp("postgres://ofsoasjazfznro:8422453c66450cd02fe7a41a3fa1d20882e038ab1345b76bb7ee8cb64102146e@ec2-54-235-246-201.compute-1.amazonaws.com:5432/ddqto13jodnbe6?ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory")
 
-
 app.use(cors());
 
-app.get('/', (req, res) => res.send('{"name":"bryan"}'))
-
 //endpoint test
-app.listen(port, () => console.log(`ToGo app listening on port ${port}!`))
-
+app.get('/', (req, res) => res.send('{"name":"bryan"}'))
 
 //get user object by e-mail 
 app.get('/user/:user.userEmail', (request, response) => { 
@@ -25,3 +21,5 @@ app.get('/user/:user.userEmail', (request, response) => {
     }) 
 
 });
+
+app.listen(process.env.port || port, () => console.log(`ToGo app listening on port ${port}!`))
