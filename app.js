@@ -9,11 +9,23 @@ var database = pgp("postgres://ofsoasjazfznro:8422453c66450cd02fe7a41a3fa1d20882
 app.use(cors());
 
 //endpoint test
-app.get('/', (req, res) => res.send('{"name":"bryan"}'))
+app.get('/', (req, res) => res.send('{"status":"correct"}'))
 
 //get user object by e-mail 
-app.get('/user/:email', (request, response) => { 
+app.get('/user/:email', (request, response) =>  {
     database.one(`SELECT * FROM "user" WHERE "userEmail" = '${request.params.email}'`)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//get store object by sellerId 
+app.get('/store/:sellerId', (request, response) =>  {
+    database.one(`SELECT * FROM "store" WHERE "sellerId" = '${request.params.sellerId}'`)
     .then((data) => {
         response.json(data);
     })
