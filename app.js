@@ -11,23 +11,6 @@ app.use(cors());
 //endpoint test
 app.get('/', (req, res) => res.send('{"status":"correct"}'))
 
-
-//create new user
-app.post('/user', (request, response) => { 
-            
-    database.query('INSERT INTO "user" (${this:name}) VALUES (${this:csv})',
-    request.body)
-    .then((data) => {
-        response
-        .status(200)
-        .json('{"response" : "user added succesfully!"}');
-    })
-    .catch( (error) => {
-        response.send(error);
-    });
-
-});
-
 //get user object by e-mail 
 app.get('/user/:email', (request, response) =>  {
     database.one(`SELECT * FROM "user" WHERE "userEmail" = '${request.params.email}'`)
@@ -40,22 +23,9 @@ app.get('/user/:email', (request, response) =>  {
 
 });
 
-//get all user object by e-mail 
+//get all user object
 app.get('/user/', (request, response) =>  {
     database.any(`SELECT * FROM "user" `)
-    .then((data) => {
-        response.json(data);
-    })
-    .catch((error) => {
-        response.send("ERROR" + error);
-    }) 
-
-});
-
-
-//get all store object by sellerId 
-app.get('/store/', (request, response) =>  {
-    database.any(`SELECT * FROM "store" `)
     .then((data) => {
         response.json(data);
     })
@@ -68,6 +38,18 @@ app.get('/store/', (request, response) =>  {
 //get store object by sellerId 
 app.get('/store/:sellerId', (request, response) =>  {
     database.one(`SELECT * FROM "store" WHERE "sellerId" = '${request.params.sellerId}'`)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//get all store object 
+app.get('/store/', (request, response) =>  {
+    database.any(`SELECT * FROM "store" `)
     .then((data) => {
         response.json(data);
     })
@@ -101,6 +83,20 @@ app.get('/product/', (request, response) =>  {
 
 });
 
+//create new user
+app.post('/newuser/', (request, response) => { 
+            
+    database.query('INSERT INTO "user" (${this:name}) VALUES (${this:csv})',
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "user added succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
 
+});
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
