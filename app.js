@@ -37,9 +37,9 @@ app.get('/user/', (request, response) =>  {
 
 });
 
-//get store object by sellerId 
+//get store object by store 
 app.get('/store/:sellerId', (request, response) =>  {
-    database.one(`SELECT * FROM "store" WHERE "sellerId" = '${request.params.sellerId}'`)
+    database.one(`SELECT * FROM "store" WHERE "storeId" = '${request.params.sellerId}'`)
     .then((data) => {
         response.json(data);
     })
@@ -87,7 +87,7 @@ app.get('/product/', (request, response) =>  {9
 
 //create new user
 app.post('/newuser', (request, response) => { 
-  //  console.log(request.body);       
+      
     database.query('INSERT INTO "user" (${this:name}) VALUES (${this:csv})',
     request.body)
     .then((data) => {
@@ -102,7 +102,7 @@ app.post('/newuser', (request, response) => {
 
 //create new store
 app.post('/newstore', (request, response) => { 
-    //  console.log(request.body);       
+        
       database.query('INSERT INTO "store" (${this:name}) VALUES (${this:csv})',
       request.body)
       .then((data) => {
@@ -117,7 +117,7 @@ app.post('/newstore', (request, response) => {
 
 //create new product
 app.post('/newproduct', (request, response) => { 
-    //  console.log(request.body);       
+        
       database.query('INSERT INTO "product" (${this:name}) VALUES (${this:csv})',
       request.body)
       .then((data) => {
