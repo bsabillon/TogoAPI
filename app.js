@@ -61,6 +61,18 @@ app.get('/store/', (request, response) =>  {
 
 });
 
+//get all category object 
+app.get('/productCategory/', (request, response) =>  {
+    database.any(`SELECT * FROM "productCategory" `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
 //get product object by id
 app.get('/product/:productId', (request, response) =>  {
     database.one(`SELECT * FROM "product" WHERE "productId" = '${request.params.productId}'`)
