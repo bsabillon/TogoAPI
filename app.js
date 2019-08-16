@@ -74,7 +74,7 @@ app.get('/product/:productId', (request, response) =>  {
 });
 
 //get all product objects 
-app.get('/product/', (request, response) =>  {
+app.get('/product/', (request, response) =>  {9
     database.any(`SELECT * FROM "product" `)
     .then((data) => {
         response.json(data);
