@@ -38,8 +38,20 @@ app.get('/user/', (request, response) =>  {
 });
 
 //get store object by store 
-app.get('/store/:sellerId', (request, response) =>  {
-    database.one(`SELECT * FROM "store" WHERE "storeId" = '${request.params.sellerId}'`)
+app.get('/store/:storeId', (request, response) =>  {
+    database.one(`SELECT * FROM "store" WHERE "storeId" = '${request.params.storeId}'`)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//get store object by sellerId 
+app.get('/storeSeller/:sellerId', (request, response) =>  {
+    database.any(`SELECT * FROM "store" WHERE "sellerId" = '${request.params.sellerId}'`)
     .then((data) => {
         response.json(data);
     })
