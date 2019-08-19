@@ -117,7 +117,7 @@ app.post('/newuser', (request, response) => {
     .then((data) => {
         response
         .status(200)
-        .json('{"response" : "user added succesfully!"}');
+        .send('{"response" : "user added succesfully!"}');
     })
     .catch( (error) => {
         response.send(error);
