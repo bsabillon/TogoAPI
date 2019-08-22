@@ -37,7 +37,7 @@ app.get('/user/', (request, response) =>  {
 
 });
 
-//get store object by store 
+//get store object by storeId 
 app.get('/store/:storeId', (request, response) =>  {
     database.one(`SELECT * FROM "store" WHERE "storeId" = '${request.params.storeId}'`)
     .then((data) => {
@@ -97,7 +97,7 @@ app.get('/product/:productId', (request, response) =>  {
 
 });
 
-//get product object by id
+//get product object by categoryId
 app.get('/productCategoryId/:productCategoryId', (request, response) =>  {
     database.any(`SELECT * FROM "product" WHERE "productCategoryId" = '${request.params.productCategoryId}'`)
     .then((data) => {
@@ -166,7 +166,20 @@ app.post('/newproduct', (request, response) => {
       });
   });
 
+//get product object by id
+app.get('/productsInCart/:email', (request, response) =>  {
+    database.one(`SELECT * FROM "cartDetails" 
+    INNER JOIN "cart" ON "cart.cartId" = "cartDetails.cartId"
+     WHERE "cart.userEmail" = '${request.params.email}'
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
 
+});
   
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
