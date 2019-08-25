@@ -166,11 +166,9 @@ app.post('/newproduct', (request, response) => {
       });
   });
 
-//get product object by id
-app.get('/productsInCart/:email', (request, response) =>  {
-    database.one(`SELECT * FROM "cartDetails" 
-    INNER JOIN "cart" ON "cart.cartId" = "cartDetails.cartId"
-     WHERE "cart.userEmail" = '${request.params.email}'
+//get cart object by userId
+app.get('/cartDetailsByUser/:email', (request, response) =>  {
+    database.any(`SELECT * FROM "cartDetails" WHERE "userEmail" = '${request.params.email}'
     `)
     .then((data) => {
         response.json(data);
@@ -181,5 +179,19 @@ app.get('/productsInCart/:email', (request, response) =>  {
 
 });
   
+//Add product to cart
+app.post('/addProductToCart', (request, response) => { 
+        
+    database.query('INSERT INTO "cartDetails" (${this:name}) VALUES (${this:csv})',
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "product added succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
