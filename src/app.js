@@ -168,7 +168,9 @@ app.post('/newproduct', (request, response) => {
 
 //get cart object by userId
 app.get('/cartDetailsByUser/:email', (request, response) =>  {
-    database.any(`SELECT * FROM "cartDetails" WHERE "userEmail" = '${request.params.email}'
+    database.any(`SELECT * FROM "cartDetails"
+    INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
+    WHERE "userEmail" = '${request.params.email}'
     `)
     .then((data) => {
         response.json(data);
@@ -193,5 +195,8 @@ app.post('/addProductToCart', (request, response) => {
         response.send(error);
     });
 });
+
+
+
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
