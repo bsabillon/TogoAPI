@@ -153,7 +153,6 @@ app.post('/newstore', (request, response) => {
 
 //create new product
 app.post('/newproduct', (request, response) => { 
-        
       database.query('INSERT INTO "product" (${this:name}) VALUES (${this:csv})',
       request.body)
       .then((data) => {
@@ -166,7 +165,7 @@ app.post('/newproduct', (request, response) => {
       });
   });
 
-//get cart object by userId
+//get cartDetails object by userId
 app.get('/cartDetailsByUser/:email', (request, response) =>  {
     database.any(`SELECT "cartDetailsId", "cartQuantity", product."productId", product."productName", product."price", product."productPictureURL" FROM "cartDetails"
     INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
@@ -182,6 +181,24 @@ app.get('/cartDetailsByUser/:email', (request, response) =>  {
 
 });
   
+
+
+//update cartDetails quantity by cartDetailsId
+app.put('/updateCartDetailsQuantity/:cartDetailsId/:cartQuantity', (request, response) =>  {
+    database.query(`UPDATE "cartDetails" SET "cartQuantity" = '${request.params.cartQuantity}'
+    WHERE "cartDetailsId" = '${request.params.cartDetailsId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "quantity updated succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
 //get cartId by userEmail
 app.get('/cartIdByUser/:email', (request, response) =>  {
     database.one(`SELECT "cartId" FROM "cart"
