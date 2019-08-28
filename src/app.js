@@ -168,9 +168,10 @@ app.post('/newproduct', (request, response) => {
 
 //get cart object by userId
 app.get('/cartDetailsByUser/:email', (request, response) =>  {
-    database.any(`SELECT * FROM "cartDetails"
+    database.any(`SELECT "cartDetailsId", "cartQuantity", product."productId", product."productName", product."price", product."productPictureURL" FROM "cartDetails"
     INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
-    WHERE "userEmail" = '${request.params.email}'
+	INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
+	WHERE cart."userEmail" = '${request.params.email}'
     `)
     .then((data) => {
         response.json(data);
