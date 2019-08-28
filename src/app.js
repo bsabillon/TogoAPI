@@ -199,6 +199,22 @@ app.put('/updateCartDetailsQuantity/:cartDetailsId/:cartQuantity', (request, res
     });
 });
 
+//Delete cartDetails from cart by cartDetailsId
+app.delete('/deleteCartDetails/:cartDetailsId', (request, response) =>  {
+    database.query(`DELETE FROM "cartDetails"
+    WHERE "cartDetailsId" = '${request.params.cartDetailsId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "quantity deleted succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
 //get cartId by userEmail
 app.get('/cartIdByUser/:email', (request, response) =>  {
     database.one(`SELECT "cartId" FROM "cart"
