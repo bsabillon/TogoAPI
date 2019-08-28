@@ -197,7 +197,7 @@ app.get('/cartIdByUser/:email', (request, response) =>  {
 });
 
 //get productCount by cartId
-app.get('/productCount/:cartId', (request, response) =>  {
+app.get('/productCountByCartId/:cartId', (request, response) =>  {
     database.one(`SELECT COUNT(*)
     FROM public."cartDetails"
     WHERE "cartId"=  '${request.params.cartId}'
