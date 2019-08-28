@@ -182,10 +182,25 @@ app.get('/cartDetailsByUser/:email', (request, response) =>  {
 
 });
   
-//get cartId by userId
+//get cartId by userEmail
 app.get('/cartIdByUser/:email', (request, response) =>  {
     database.one(`SELECT "cartId" FROM "cart"
 	WHERE "userEmail" = '${request.params.email}' AND "cartStatusId" = 1
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//get productCount by cartId
+app.get('/productCount/:cartId', (request, response) =>  {
+    database.one(`SELECT COUNT(*)
+    FROM public."cartDetails"
+    WHERE "cartId"=  '${request.params.cartId}'
     `)
     .then((data) => {
         response.json(data);
