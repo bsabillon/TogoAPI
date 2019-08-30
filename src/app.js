@@ -227,6 +227,21 @@ app.get('/cartIdByUser/:email', (request, response) =>  {
 
 });
 
+//create new cart
+app.post('/newCart', (request, response) => { 
+    database.query('INSERT INTO "cart" (${this:name}) VALUES (${this:csv})',
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "cart created succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
+
 //get productCount by cartId
 app.get('/productCountByCartId/:cartId', (request, response) =>  {
     database.one(`SELECT COUNT(*)
