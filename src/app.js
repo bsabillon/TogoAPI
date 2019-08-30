@@ -317,6 +317,49 @@ app.delete('/deleteCard/:cardId', (request, response) =>  {
     });
 });
 
+//Add address
+app.post('/addAddress', (request, response) => { 
+        
+    database.query('INSERT INTO "address" (${this:name}) VALUES (${this:csv})',
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "address added succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
 
+//get address by userEmail
+app.get('/addressByUser/:userEmail', (request, response) =>  {
+    database.any(`SELECT * FROM "address"
+	WHERE "userEmail" = '${request.params.userEmail}'
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//Delete card by cartDetailsId
+app.delete('/deleteAddress/:addressId', (request, response) =>  {
+    database.query(`DELETE FROM "address"
+    WHERE "addressId" = '${request.params.addressId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "address deleted succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
