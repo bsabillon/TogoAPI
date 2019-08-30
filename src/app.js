@@ -180,8 +180,6 @@ app.get('/cartDetailsByUser/:email', (request, response) =>  {
     }) 
 
 });
-  
-
 
 //update cartDetails quantity by cartDetailsId
 app.put('/updateCartDetailsQuantity/:cartDetailsId/:cartQuantity', (request, response) =>  {
@@ -259,6 +257,50 @@ app.post('/addProductToCart', (request, response) => {
     });
 });
 
+//get card by userEmail
+app.get('/cardByUser/:userEmail', (request, response) =>  {
+    database.any(`SELECT * FROM "card"
+	WHERE "userEmail" = '${request.params.userEmail}'
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+//Add card
+app.post('/addCard', (request, response) => { 
+        
+    database.query('INSERT INTO "card" (${this:name}) VALUES (${this:csv})',
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "card added succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
+//Delete card by cartDetailsId
+app.delete('/deleteCard/:cardId', (request, response) =>  {
+    database.query(`DELETE FROM "card"
+    WHERE "cardId" = '${request.params.cardId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "Card deleted succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
 
 
 
