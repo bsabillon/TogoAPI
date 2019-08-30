@@ -362,4 +362,25 @@ app.delete('/deleteAddress/:addressId', (request, response) =>  {
     });
 });
 
+//get cartDetailsTotal object by userId
+app.get('/cartDetailsTotalByUser/:email', (request, response) =>  {
+    database.any(`SELECT 
+    SUM ("cartQuantity"*product."price") AS total
+    FROM "cartDetails"
+        INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
+        INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
+        WHERE cart."userEmail" ='${request.params.email}'
+        GROUP BY cart."userEmail" 
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
+
+
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
