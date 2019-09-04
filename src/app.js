@@ -384,18 +384,18 @@ app.get('/cartDetailsTotalByUser/:email', (request, response) =>  {
 
 app.get('/orderDetailsByUser/:email/:cartStatusId', (request, response) =>  {
     database.any(`SELECT "cartDetailsId", "cartQuantity",
-product."productId", product."productName", product."price", product."productPictureURL",
-"address"."addressAlias",
-"card"."cardDescription",
-"cartStatus"."statusDescription"
-FROM "cartDetails"
-    INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
-	INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
-	INNER Join "cartStatus" ON "cartStatus"."cartStatusId" = "cart"."cartStatusId" 
-	INNER JOIN "card" ON card."cardId"  = "cart"."cardId"
-	INNER JOIN "address" ON address."addressId"  = "cart"."addressId"
-	WHERE cart."userEmail" = '${request.params.email}'
-    AND cart."cartStatusId" = '${request.params.cartStatusId}'
+    product."productId", product."productName", product."price", product."productPictureURL",
+    "address"."addressAlias", "address"."addressDescription","address"."addressPhone","address"."addressReference",
+    "card"."cardDescription",
+    "cartStatus"."statusDescription"
+    FROM "cartDetails"
+        INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
+        INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
+        INNER Join "cartStatus" ON "cartStatus"."cartStatusId" = "cart"."cartStatusId" 
+        INNER JOIN "card" ON card."cardId"  = "cart"."cardId"
+        INNER JOIN "address" ON address."addressId"  = "cart"."addressId"
+        WHERE cart."userEmail" = '${request.params.email}'
+        AND cart."cartStatusId" = '${request.params.cartStatusId}'
     `)
     .then((data) => {
         response.json(data);
@@ -422,6 +422,23 @@ app.put('/updateCartStatus/:cartId/:cartStatusId', (request, response) =>  {
     });
 });
 
+//update cart status
+app.put('/updateCart/:cartId/:addressId/:cardId', (request, response) =>  {
+    database.query(`UPDATE "cart" SET
+    "addressId"= '${request.params.addressId}', 
+    "cardId" ='${request.params.cardId}'
+    WHERE "cartId" = '${request.params.cartId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "cartStatus updated succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
 
 
 
