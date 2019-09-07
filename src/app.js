@@ -415,12 +415,13 @@ app.get('/cartDetailsTotalByUser/:email', (request, response) =>  {
 app.get('/cartTotalCountByUser/:email', (request, response) =>  {
     database.any(`SELECT 
     SUM ("cartQuantity"*product."price") AS total,
-	SUM ("cartQuantity") AS NoProductos
+	SUM ("cartQuantity") AS NoProductos,
+	cart."cartId"
     FROM "cartDetails"
         INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
         INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
         WHERE cart."userEmail" = '${request.params.email}'
-        GROUP BY cart."userEmail" 
+        GROUP BY cart."cartId" 
     `)
     .then((data) => {
         response.json(data);
