@@ -109,7 +109,7 @@ app.get('/productCategoryId/:productCategoryId', (request, response) =>  {
 
 });
 
-//get product object by sellerId
+//get product object by storeId
 app.get('/productStoreId/:storeId', (request, response) =>  {
     database.any(`SELECT * FROM "product" WHERE "storeId" = '${request.params.storeId}'`)
     .then((data) => {
