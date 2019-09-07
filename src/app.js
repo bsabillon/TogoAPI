@@ -165,6 +165,23 @@ app.post('/newproduct', (request, response) => {
       });
   });
 
+//Delete product by productId
+app.delete('/deleteProduct/:productId', (request, response) =>  {
+    database.query(`DELETE FROM "product"
+    WHERE "productId" = '${request.params.productId}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "product deleted succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
+
 //get cartDetails object by userId
 app.get('/cartDetailsByUser/:email', (request, response) =>  {
     database.any(`SELECT "cartDetailsId", "cartQuantity", product."productId", product."productName", product."price", product."productPictureURL" FROM "cartDetails"
