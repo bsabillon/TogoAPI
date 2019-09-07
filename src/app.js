@@ -109,6 +109,18 @@ app.get('/productCategoryId/:productCategoryId', (request, response) =>  {
 
 });
 
+//get product object by sellerId
+app.get('/productStoreId/:storeId', (request, response) =>  {
+    database.any(`SELECT * FROM "product" WHERE "storeId" = '${request.params.storeId}'`)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }) 
+
+});
+
 //get all product objects 
 app.get('/product/', (request, response) =>  {9
     database.any(`SELECT * FROM "product" `)
