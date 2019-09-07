@@ -441,5 +441,22 @@ app.put('/updateCart/:cartId/:addressId/:cardId', (request, response) =>  {
 });
 
 
+//Create new seller
+app.put('/createSeller/:userEmail', (request, response) =>  {
+    database.query(`UPDATE public."user"
+    SET "sellerId" = (SELECT MAX("user"."sellerId")+1 FROM public."user")
+    WHERE "userEmail" = '${request.params.userEmail}'
+    `,
+    request.body)
+    .then((data) => {
+        response
+        .status(200)
+        .json('{"response" : "user updated succesfully!"}');
+    })
+    .catch( (error) => {
+        response.send(error);
+    });
+});
+
 
 app.listen(process.env.PORT || port, () => console.log(`ToGo app listening on port ${port}!`))
