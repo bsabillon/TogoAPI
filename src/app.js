@@ -398,7 +398,7 @@ app.get('/cartDetailsTotalByUser/:email', (request, response) =>  {
     FROM "cartDetails"
         INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
         INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
-        WHERE cart."userEmail" ='${request.params.email}'
+        WHERE cart."userEmail" ='${request.params.email}' AND "cartStatusId" = 1
         GROUP BY cart."userEmail" 
     `)
     .then((data) => {
