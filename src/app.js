@@ -434,6 +434,30 @@ app.get('/cartTotalCountByUser/:email', (request, response) =>  {
 
 });
 
+//get cartDetailsTotal and Count  by userId
+//pending TODO
+app.get('/receivedOrdersByUser/:email', (request, response) =>  {
+    database.any(`SELECT 
+    SUM ("cartQuantity"*product."price") AS total,
+	SUM ("cartQuantity") AS NoProductos,
+	cart."cartId"
+    FROM "cartDetails"
+        INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
+        INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
+        WHERE cart."userEmail" = '${request.params.email}' AND "cartStatusId"=5
+        GROUP BY cart."cartId" 
+    `)
+    .then((data) => {
+        response.json(data);
+    })
+    .catch((error) => {
+        response.send("ERROR" + error);
+    }); 
+    
+
+});
+
+
 app.get('/orderDetailsByUser/:email/:cartStatusId', (request, response) =>  {
     database.any(`SELECT "cartDetailsId", "cartQuantity",
     product."productId", product."productName", product."price", product."productPictureURL",
