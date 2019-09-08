@@ -434,7 +434,7 @@ app.get('/cartTotalCountByUser/:email', (request, response) =>  {
 
 });
 
-//get cartDetailsTotal and Count  by userId
+//get receivedOrdersByUser by userId
 //pending TODO
 app.get('/receivedOrdersByUser/:email', (request, response) =>  {
     database.any(`SELECT 
