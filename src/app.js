@@ -412,6 +412,7 @@ app.get('/cartDetailsTotalByUser/:email', (request, response) =>  {
 });
 
 //get cartDetailsTotal and Count  by userId
+//pending TODO
 app.get('/cartTotalCountByUser/:email', (request, response) =>  {
     database.any(`SELECT 
     SUM ("cartQuantity"*product."price") AS total,
@@ -420,7 +421,7 @@ app.get('/cartTotalCountByUser/:email', (request, response) =>  {
     FROM "cartDetails"
         INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
         INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
-        WHERE cart."userEmail" = '${request.params.email}'
+        WHERE cart."userEmail" = '${request.params.email}' AND "cartStatusId"=2
         GROUP BY cart."cartId" 
     `)
     .then((data) => {
