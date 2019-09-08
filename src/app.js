@@ -199,7 +199,7 @@ app.get('/cartDetailsByUser/:email', (request, response) =>  {
     database.any(`SELECT "cartDetailsId", "cartQuantity", product."productId", product."productName", product."price", product."productPictureURL" FROM "cartDetails"
     INNER JOIN "product" ON product."productId" = "cartDetails"."productId"
 	INNER JOIN "cart" ON cart."cartId" = "cartDetails"."cartId"
-	WHERE cart."userEmail" = '${request.params.email}'
+	WHERE cart."userEmail" = '${request.params.email}' AND "cartStatusId" = 1
     `)
     .then((data) => {
         response.json(data);
